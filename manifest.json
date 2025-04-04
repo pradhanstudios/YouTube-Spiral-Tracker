@@ -5,6 +5,17 @@
     "manifest_version": 3,
     "action": {
         "default_popup": "hello.html",
-        "default_icon": "hello_extensions.png"
-    }
+        "default_icon": "images/hello_extensions.png"
+    },
+    "content_scripts": [
+        {
+            "js": [
+                "scripts/content.js"
+            ],
+            "matches": [
+                "https://youtube.com/watch?v=*",
+                "https://youtube.com/*"
+            ]
+        }
+    ]
 }
