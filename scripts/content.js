@@ -1,7 +1,11 @@
-const video_title = document.getElementById("title");
+document.addEventListener('DOMContentLoaded', function () {
 
-console.log("test");
+    const video_title = document.title;
 
-if (video_title) {
     console.log(video_title);
-}
+    console.log(document.title);
+
+    console.log("test");
+
+});
+

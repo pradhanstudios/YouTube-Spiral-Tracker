@@ -3,19 +3,14 @@
     "description": "Base Level Extension",
     "version": "1.0",
     "manifest_version": 3,
+    "permissions": [
+        "activeTab",
+        "scripting"
+    ],
     "action": {
-        "default_popup": "hello.html",
-        "default_icon": "images/hello_extensions.png"
+        "default_popup": "popup.html"
     },
-    "content_scripts": [
-        {
-            "js": [
-                "scripts/content.js"
-            ],
-            "matches": [
-                "https://youtube.com/watch?v=*",
-                "https://youtube.com/*"
-            ]
-        }
+    "host_permissions": [
+        "https://youtube.com/*"
     ]
 }
