@@ -13,7 +13,7 @@ class Video {
 
 class Node {
     constructor(video = null, next = null) {
-        this.video = video;
+        this.data = video;
         this.next = next;
     }
 
@@ -125,17 +125,24 @@ class LinkedList {
         console.log(str);
     }
 
-    // toString() {
-    //     let current = this.head;
-    //     let result = `<LinkedList: size=${this.size}, list=[ `;
-    //     while (current) {
-    //         result += current;
-    //         result += ` `;
-    //     }
-    //     result += `]>`
-    //     console.log("ll, toString(): " + result);
-    //     return result;
-    // }
+    toString() {
+        let current = this.head;
+        let str = "";
+        while (current) {
+            str += current.data + " ";
+            current = current.next;
+        }
+        return str;
+        // let current = this.head;
+        // let result = `<LinkedList: size=${this.size}, list=[ `;
+        // while (current) {
+        //     result += current;
+        //     result += ` `;
+        // }
+        // result += `]>`
+        // console.log("ll, toString(): " + result);
+        // return result;
+    }
 
     // Get the size of the list
     getSize() {
@@ -157,7 +164,13 @@ chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
                 var vid = new Video();
                 vid.title = results[0].result[0];
                 vid.category = results[0].result[1];
-                document.getElementById('video').textContent = vid;
+
+                var ll = new LinkedList();
+                ll.append(vid);
+                ll.printList();
+                console.log(ll);
+
+                document.getElementById('video').textContent = ll;
             } else {
                 document.getElementById('video').textContent = "Video data not found.";
             }
