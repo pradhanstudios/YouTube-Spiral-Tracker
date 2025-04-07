@@ -12,16 +12,144 @@ class Video {
 }
 
 class Node {
-    constructor(video = null, next = null, prev = null) {
-        this.video = video;
+    constructor(video = null, next = null) {
+        this.data = video;
         this.next = next;
-        this.prev = prev;
     }
 
     toString() {
-        return `<Node: Video=${this.video}, next=${this.next}, prev=${this.prev}>`;
+        return `<Node: Video=${this.video}, next=${this.next}>`;
     }
 }
+
+class LinkedList {
+    constructor() {
+        this.head = null;
+        this.size = 0;
+    }
+
+    // Add a node to the end of the list
+    append(data) {
+        const newNode = new Node(data);
+
+        if (!this.head) {
+            this.head = newNode;
+        } else {
+            let current = this.head;
+            while (current.next) {
+                current = current.next;
+            }
+            current.next = newNode;
+        }
+        this.size++;
+    }
+
+    // Insert a node at a specific index
+    insertAt(data, index) {
+        if (index < 0 || index > this.size) {
+            return console.error("Index out of bounds");
+        }
+
+        if (index === 0) {
+            const newNode = new Node(data);
+            newNode.next = this.head;
+            this.head = newNode;
+        } else {
+            const newNode = new Node(data);
+            let current = this.head;
+            let previous = null;
+            let count = 0;
+
+            while (count < index) {
+                previous = current;
+                current = current.next;
+                count++;
+            }
+            newNode.next = current;
+            previous.next = newNode;
+        }
+        this.size++;
+    }
+
+    // Get the data at a specific index
+    getAt(index) {
+        if (index < 0 || index >= this.size) {
+            return null;
+        }
+        let current = this.head;
+        let count = 0;
+        while (count < index) {
+            current = current.next;
+            count++;
+        }
+        return current.data;
+    }
+
+    // Remove a node from a specific index
+    removeAt(index) {
+        if (index < 0 || index >= this.size) {
+            return console.error("Index out of bounds.");
+        }
+
+        if (index === 0) {
+            this.head = this.head.next;
+        } else {
+            let current = this.head;
+            let previous = null;
+            let count = 0;
+
+            while (count < index) {
+                previous = current;
+                current = current.next;
+                count++;
+            }
+            previous.next = current.next;
+        }
+        this.size--;
+    }
+
+    // Clear the list
+    clear() {
+        this.head = null;
+        this.size = 0;
+    }
+
+    // Print the list data
+    printList() {
+        let current = this.head;
+        let str = "";
+        while (current) {
+            str += current.data + " ";
+            current = current.next;
+        }
+        console.log(str);
+    }
+
+    toString() {
+        let current = this.head;
+        let str = "";
+        while (current) {
+            str += current.data + " ";
+            current = current.next;
+        }
+        return str;
+        // let current = this.head;
+        // let result = `<LinkedList: size=${this.size}, list=[ `;
+        // while (current) {
+        //     result += current;
+        //     result += ` `;
+        // }
+        // result += `]>`
+        // console.log("ll, toString(): " + result);
+        // return result;
+    }
+
+    // Get the size of the list
+    getSize() {
+        return this.size;
+    }
+}
+
 
 chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
     chrome.scripting.executeScript(
@@ -36,7 +164,13 @@ chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
                 var vid = new Video();
                 vid.title = results[0].result[0];
                 vid.category = results[0].result[1];
-                document.getElementById('video').textContent = vid;
+
+                var ll = new LinkedList();
+                ll.append(vid);
+                ll.printList();
+                console.log(ll);
+
+                document.getElementById('video').textContent = ll;
             } else {
                 document.getElementById('video').textContent = "Video data not found.";
             }
