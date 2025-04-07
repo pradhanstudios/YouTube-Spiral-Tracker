@@ -23,6 +23,8 @@ class Node {
     }
 }
 
+var video = new Video();
+
 chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
     chrome.scripting.executeScript(
         {
@@ -31,17 +33,18 @@ chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
         },
         (results) => {
             if (chrome.runtime.lastError) {
-                document.getElementById('title').textContent = "Error: " + chrome.runtime.lastError.message;
+                video.title = "Error: " + chrome.runtime.lastError.message;
             } else if (results && results[0] && results[0].result) {
-                const r = results[0].results;
-                var v = new Video(r);
-                var n = new Node(v);
-                document.getElementById('title').textContent = n;
+                console.log(results[0].result);
+                video.title = results[0].result;
+                console.log(video.title);
             } else {
-                document.getElementById('title').textContent = "Title not found.";
+                video.title = "Title not found.";
             }
+            console.log(video.title);
         }
     );
+    console.log(video.title)
     
     chrome.scripting.executeScript(
         {
@@ -50,15 +53,17 @@ chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
         },
         (results) => {
             if (chrome.runtime.lastError) {
-                document.getElementById('category').textContent = "Error: " + chrome.runtime.lastError.message;
+                video.category = "Error: " + chrome.runtime.lastError.message;
             } else if (results && results[0] && results[0].result) {
-                document.getElementById('category').textContent = results[0].result;
+                video.category = results[0].result;
             } else {
-                document.getElementById('category').textContent = "Category not found.";
+                video.category = "Category not found.";
             }
         }
     )
 });
+
+document.getElementById('video').innerText = video.toString();
 
 function getYouTubeTitle() {
     const titleElement = document.querySelector('h1.ytd-video-primary-info-renderer');
