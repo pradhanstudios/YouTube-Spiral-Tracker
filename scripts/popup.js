@@ -45,7 +45,7 @@ function getCategory() {
     const pattern = new RegExp('\"category\"\:\"([^\"]*)\"');
     const category = pattern.exec(document.documentElement.outerHTML)[1];
     if (category) {
-        return category; 
+        return JSON.parse('"' + category + '"'); 
     } else {
         return null;
     }
