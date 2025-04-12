@@ -1,13 +1,13 @@
 class Video {
-    constructor(title, category = "NaN") {
+    constructor(title, keywords = "NaN") {
         this.title = title;
-        this.category = category;
+        this.keywords = keywords;
         this.start_time = Date.now();
         this.end_time = null;
     }
 
     toString() {
-        return `<Video: title="${this.title}", category="${this.category}", start_time="${this.start_time}", end_time=${this.end_time}>`;
+        return `<Video: title="${this.title}", keywords="${this.keywords}", start_time="${this.start_time}", end_time=${this.end_time}>`;
     }
 }
 
@@ -165,7 +165,7 @@ chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
                 
                 var vid = new Video();
                 vid.title = results[0].result[0];
-                vid.category = results[0].result[1];
+                vid.keywords = results[0].result[1];
 
                 var ll = new LinkedList();
                 ll.append(vid);
@@ -188,15 +188,15 @@ function getMetadata() {
         title_element = null;
     }
 
-    const pattern = new RegExp('\"category\"\:\"([^\"]*)\"');
-    var category_element = pattern.exec(document.documentElement.outerHTML)[1];
-    if (category_element) {
-        category_element = JSON.parse('"' + category_element + '"');
+    const pattern = new RegExp('\"keywords\"\\scontent\=\"([^\"]*)\"');
+    var keywords_element = pattern.exec(document.documentElement.outerHTML)[1];
+    if (keywords_element) {
+        keywords_element = JSON.parse('"' + keywords_element + '"');
     } else {
-        category_element = null;
+        keywords_element = null;
     }
 
-    return [title_element, category_element];
+    return [title_element, keywords_element];
 }
 
 
