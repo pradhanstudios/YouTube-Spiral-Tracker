@@ -158,9 +158,11 @@ chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
             function: getMetadata
         },
         (results) => {
+            console.log(results);
             if (chrome.runtime.lastError) {
                 document.getElementById('video').textContent = "Error: " + chrome.runtime.lastError.message;
             } else if (results && results[0] && results[0].result) {
+                
                 var vid = new Video();
                 vid.title = results[0].result[0];
                 vid.category = results[0].result[1];
@@ -197,6 +199,8 @@ function getMetadata() {
     return [title_element, category_element];
 }
 
+
+
 function getYouTubeTitle() {
     const title_element = document.querySelector('h1.ytd-video-primary-info-renderer');
     if (title_element) {
@@ -215,3 +219,14 @@ function getCategory() {
         return null;
     }
 }
+
+function getKeywords() {
+    const pattern = new RegExp('\"keywords\"\\scontent\=\"([^\"]*)\"');
+    const keywords = pattern.exec(document.documentElement.outerHTML)[1];
+    if (keywords) {
+        return JSON.parse('"' + keywords + '"');
+    } else {
+        return null;
+    }
+}
+
